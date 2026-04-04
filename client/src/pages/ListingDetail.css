@@ -1,0 +1,96 @@
+.retour {
+  display: inline-block;
+  color: var(--vert);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-size: .9rem;
+}
+.retour:hover { text-decoration: underline; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Galerie */
+.galerie-main {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--gris-clair);
+  aspect-ratio: 4/3;
+}
+.galerie-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.galerie-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--gris);
+  font-size: 1.2rem;
+}
+.galerie-statut {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  font-size: .8rem;
+}
+.galerie-thumbs {
+  display: flex;
+  gap: .5rem;
+  margin-top: .75rem;
+  flex-wrap: wrap;
+}
+.galerie-thumbs img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color var(--transition);
+}
+.galerie-thumbs img.active,
+.galerie-thumbs img:hover { border-color: var(--vert); }
+
+/* Infos */
+.detail-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.detail-header h1 { font-size: 1.5rem; margin: .5rem 0; }
+.detail-loc { color: var(--gris); font-size: .92rem; }
+.detail-prix { font-size: 1.6rem; font-weight: 800; color: var(--vert); margin-top: .4rem; }
+.detail-prix span { font-size: .9rem; font-weight: 400; color: var(--gris); }
+
+.detail-description h3,
+.detail-contact h3,
+.detail-form h3 { font-size: 1rem; font-weight: 700; margin-bottom: .75rem; color: var(--texte); }
+.detail-description p { color: #444; line-height: 1.7; white-space: pre-wrap; }
+
+.detail-contact { background: var(--vert-pale); padding: 1rem; border-radius: var(--radius); }
+.detail-contact p { margin-bottom: .3rem; font-size: .92rem; }
+
+.detail-form { background: var(--gris-clair); padding: 1.25rem; border-radius: var(--radius); }
+
+.detail-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+.listing-type {
+  display: inline-block;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.listing-type-location { background: #dbeafe; color: #1e40af; }
+.listing-type-vente-maison { background: #d1fae5; color: #065f46; }
+.listing-type-terrain { background: #fef3c7; color: #92400e; }
+
+@media (max-width: 900px) {
+  .detail-grid { grid-template-columns: 1fr; }
+}

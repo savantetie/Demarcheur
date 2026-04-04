@@ -1,0 +1,87 @@
+.listing-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--ombre);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+.listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--ombre-forte);
+}
+
+.listing-card-img {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: var(--gris-clair);
+}
+.listing-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+.listing-card:hover .listing-card-img img { transform: scale(1.04); }
+
+.listing-type {
+  position: absolute;
+  top: .6rem;
+  left: .6rem;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.listing-type-location { background: #dbeafe; color: #1e40af; }
+.listing-type-vente-maison { background: #d1fae5; color: #065f46; }
+.listing-type-terrain { background: #fef3c7; color: #92400e; }
+
+.listing-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: .1em;
+}
+
+.listing-card-body {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.listing-titre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--texte);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.listing-localisation {
+  font-size: .82rem;
+  color: var(--gris);
+}
+
+.listing-prix {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--vert);
+  margin-top: auto;
+}
+.listing-periode { font-size: .75rem; font-weight: 400; color: var(--gris); }
