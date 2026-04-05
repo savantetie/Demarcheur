@@ -73,3 +73,14 @@
   .paiement-attente-card { grid-template-columns: 1fr; }
   .pac-actions { align-items: flex-start; }
 }
+
+/* Document RCCM */
+.btn-doc-rccm {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: #eff6ff; border: 1.5px solid #bfdbfe;
+  color: #1d4ed8; border-radius: 8px;
+  padding: .4rem .9rem; font-size: .82rem; font-weight: 700;
+  text-decoration: none; margin-top: .4rem;
+  transition: all .15s;
+}
+.btn-doc-rccm:hover { background: #dbeafe; }

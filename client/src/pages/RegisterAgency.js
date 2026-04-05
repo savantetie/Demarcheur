@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
+import api from '../utils/api';
 import './Auth.css';
 import './RegisterAgency.css';
 
@@ -16,6 +17,7 @@ export default function RegisterAgency() {
     nomEntreprise: '', numeroEnregistrement: '', adresse: '', ville: '', siteWeb: '', description: '',
   });
   const [chargement, setChargement] = useState(false);
+  const [fichierRCCM, setFichierRCCM] = useState(null);
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
@@ -48,6 +50,14 @@ export default function RegisterAgency() {
         nomEntreprise: form.nomEntreprise, numeroEnregistrement: form.numeroEnregistrement,
         adresse: form.adresse, ville: form.ville, siteWeb: form.siteWeb, description: form.description,
       });
+      // Upload du document RCCM si fourni
+      if (fichierRCCM) {
+        try {
+          const fd = new FormData();
+          fd.append('document', fichierRCCM);
+          await api.post('/auth/agence/document', fd);
+        } catch {}
+      }
       toast.success(res.message || 'Demande soumise !');
       navigate('/tableau-de-bord');
     } catch (err) {
@@ -144,8 +154,21 @@ export default function RegisterAgency() {
               <textarea value={form.description} onChange={set('description')} rows={3} placeholder="Décrivez votre agence, votre spécialité, vos années d'expérience..." />
             </div>
 
+            <div className="form-group">
+              <label>Document RCCM / Registre de commerce <span style={{color:'#6b7280',fontWeight:400}}>(optionnel mais recommandé)</span></label>
+              <div className="rccm-upload-zone" onClick={() => document.getElementById('rccm-input').click()}>
+                <span className="rccm-upload-icon">📄</span>
+                {fichierRCCM
+                  ? <span className="rccm-upload-name">✅ {fichierRCCM.name}</span>
+                  : <span className="rccm-upload-hint">Cliquez pour joindre le document <br/><small>PDF, JPG, PNG — max 10 Mo</small></span>
+                }
+                <input id="rccm-input" type="file" accept=".pdf,.jpg,.jpeg,.png" style={{display:'none'}}
+                  onChange={e => setFichierRCCM(e.target.files[0])} />
+              </div>
+            </div>
+
             <div className="agency-info-box">
-              ℹ️ Votre compte sera examiné par notre équipe sous <strong>24-48h</strong>. Vous recevrez une notification par email.
+              ℹ️ Votre compte sera examiné par notre équipe sous <strong>24-48h</strong>. Vous pouvez joindre votre RCCM pour accélérer la validation.
             </div>
 
             <div className="form-actions-row">

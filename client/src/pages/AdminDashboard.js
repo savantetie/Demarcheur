@@ -177,10 +177,16 @@ export default function AdminDashboard() {
                   <h3>{a.agence?.nomEntreprise}</h3>
                   <p>👤 Responsable : <strong>{a.nom}</strong></p>
                   <p>📧 {a.email} · 📞 {a.telephone}</p>
-                  {a.agence?.numeroEnregistrement && <p>📋 RCCM : {a.agence.numeroEnregistrement}</p>}
+                  {a.agence?.ville && <p>🌍 Ville : {a.agence.ville || a.ville}</p>}
+                  {a.agence?.numeroEnregistrement && <p>📋 N° RCCM : <strong>{a.agence.numeroEnregistrement}</strong></p>}
                   {a.agence?.adresse && <p>📍 {a.agence.adresse}</p>}
-                  {a.agence?.description && <p className="validation-desc">{a.agence.description}</p>}
-                  <p style={{ fontSize: '.75rem', color: 'var(--gris)' }}>
+                  {a.agence?.siteWeb && <p>🌐 <a href={a.agence.siteWeb} target="_blank" rel="noopener noreferrer">{a.agence.siteWeb}</a></p>}
+                  {a.agence?.description && <p className="validation-desc">💬 {a.agence.description}</p>}
+                  {a.agence?.documentRCCM
+                    ? <a href={a.agence.documentRCCM} target="_blank" rel="noopener noreferrer" className="btn-doc-rccm">📄 Voir le document RCCM</a>
+                    : <p style={{ fontSize: '.78rem', color: '#f59e0b' }}>⚠️ Aucun document RCCM joint</p>
+                  }
+                  <p style={{ fontSize: '.75rem', color: 'var(--gris)', marginTop: '.5rem' }}>
                     Demande reçue le {new Date(a.agence?.dateDemande).toLocaleDateString('fr-FR')}
                   </p>
                 </div>
