@@ -9,7 +9,8 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => ({
     folder: 'demarcheur/documents',
     allowed_formats: ['jpg', 'jpeg', 'png', 'pdf'],
-    resource_type: file.mimetype === 'application/pdf' ? 'raw' : 'image',
+    resource_type: 'raw',
+    access_mode: 'public',
   }),
 });
 

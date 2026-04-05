@@ -183,15 +183,7 @@ export default function AdminDashboard() {
                   {a.agence?.siteWeb && <p>🌐 <a href={a.agence.siteWeb} target="_blank" rel="noopener noreferrer">{a.agence.siteWeb}</a></p>}
                   {a.agence?.description && <p className="validation-desc">💬 {a.agence.description}</p>}
                   {a.agence?.documentRCCM
-                    ? <button className="btn-doc-rccm" onClick={async () => {
-                        const token = localStorage.getItem('token');
-                        const res = await fetch(`${process.env.REACT_APP_API_URL}/admin/agences/${a._id}/document`, {
-                          headers: { Authorization: `Bearer ${token}` },
-                          redirect: 'follow',
-                        });
-                        const blob = await res.blob();
-                        window.open(URL.createObjectURL(blob), '_blank');
-                      }}>📄 Voir le document RCCM</button>
+                    ? <a href={a.agence.documentRCCM} download="document-rccm" target="_blank" rel="noopener noreferrer" className="btn-doc-rccm">📄 Télécharger le RCCM</a>
                     : <p style={{ fontSize: '.78rem', color: '#f59e0b' }}>⚠️ Aucun document RCCM joint</p>
                   }
                   <p style={{ fontSize: '.75rem', color: 'var(--gris)', marginTop: '.5rem' }}>
