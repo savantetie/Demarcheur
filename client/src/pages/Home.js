@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ListingCard from '../components/ListingCard';
 import FilterBar from '../components/FilterBar';
+import AgencesCarousel from '../components/AgencesCarousel';
 import api from '../utils/api';
 import './Home.css';
 
@@ -237,6 +238,11 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* ══════════════════════════════════════
+          CAROUSEL AGENCES PARTENAIRES
+      ══════════════════════════════════════ */}
+      <AgencesCarousel />
 
       {/* ══════════════════════════════════════
           CTA AGENT — avec image

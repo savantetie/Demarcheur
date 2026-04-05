@@ -4,7 +4,6 @@ import { useAuth } from './context/AuthContext';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import AgencesCarousel from './components/AgencesCarousel';
 import Home from './pages/Home';
 import ListingDetail from './pages/ListingDetail';
 import Login from './pages/Login';
@@ -76,7 +75,6 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
-      <AgencesCarousel />
       <Footer />
     </BrowserRouter>
   );

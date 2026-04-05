@@ -1,36 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '../utils/api';
 import './AgencesCarousel.css';
 
-const AGENCES = [
-  { nom: 'Immo Conakry', sigle: 'IC', couleur: '#16a085' },
-  { nom: 'Guinea Habitat', sigle: 'GH', couleur: '#2980b9' },
-  { nom: 'Prestige Immo', sigle: 'PI', couleur: '#8e44ad' },
-  { nom: 'Conakry Invest', sigle: 'CI', couleur: '#e67e22' },
-  { nom: 'Alpha Immobilier', sigle: 'AI', couleur: '#c0392b' },
-  { nom: 'Kaloum Agency', sigle: 'KA', couleur: '#27ae60' },
-  { nom: 'Delta Properties', sigle: 'DP', couleur: '#2c3e50' },
-  { nom: 'Ratoma Immo', sigle: 'RI', couleur: '#d35400' },
-  { nom: 'Nongo Premium', sigle: 'NP', couleur: '#1abc9c' },
-  { nom: 'Hamdallaye Realty', sigle: 'HR', couleur: '#6c5ce7' },
-];
+const COULEURS = ['#16a085','#2980b9','#8e44ad','#e67e22','#c0392b','#27ae60','#2c3e50','#d35400','#1abc9c','#6c5ce7'];
 
 export default function AgencesCarousel() {
-  // On duplique pour l'effet boucle infinie
-  const items = [...AGENCES, ...AGENCES];
+  const [agences, setAgences] = useState([]);
+
+  useEffect(() => {
+    api.get('/auth/agences-partenaires').then(res => {
+      setAgences(res.data.agences || []);
+    }).catch(() => {});
+  }, []);
+
+  if (agences.length === 0) return null;
+
+  // Dupliquer pour boucle infinie
+  const items = [...agences, ...agences];
 
   return (
     <div className="agences-strip">
       <div className="agences-strip-label">Agences partenaires</div>
       <div className="agences-track-wrap">
         <div className="agences-track">
-          {items.map((a, i) => (
-            <div className="agence-logo-card" key={i}>
-              <div className="agence-sigle" style={{ background: a.couleur }}>
-                {a.sigle}
+          {items.map((a, i) => {
+            const sigle = a.agence?.nomEntreprise
+              ? a.agence.nomEntreprise.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+              : a.nom.slice(0, 2).toUpperCase();
+            const couleur = COULEURS[i % COULEURS.length];
+            return (
+              <div className="agence-logo-card" key={i}>
+                {a.agence?.logo
+                  ? <img src={a.agence.logo} alt={sigle} className="agence-logo-img" />
+                  : <div className="agence-sigle" style={{ background: couleur }}>{sigle}</div>
+                }
+                <span className="agence-nom">{a.agence?.nomEntreprise || a.nom}</span>
               </div>
-              <span className="agence-nom">{a.nom}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

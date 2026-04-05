@@ -68,6 +68,19 @@ exports.inscriptionAgence = async (req, res) => {
   }
 };
 
+/** GET /api/auth/agences-partenaires */
+exports.agencesPartenaires = async (req, res) => {
+  try {
+    const agences = await User.find({ role: 'agency', 'agence.valide': true, actif: true })
+      .select('nom agence.nomEntreprise agence.logo agence.ville')
+      .sort({ 'agence.dateValidation': -1 })
+      .limit(20);
+    res.json({ agences });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 /** POST /api/auth/connexion */
 exports.connexion = async (req, res) => {
   try {

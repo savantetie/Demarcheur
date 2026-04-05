@@ -26,6 +26,9 @@ router.delete('/avatar', proteger, ctrl.supprimerAvatar);
 // Document RCCM agence
 router.post('/agence/document', proteger, uploadDoc.single('document'), ctrl.uploadDocumentAgence);
 
+// Agences partenaires (publique)
+router.get('/agences-partenaires', ctrl.agencesPartenaires);
+
 // Favoris
 router.post('/favoris/:id', proteger, ctrl.toggleFavori);
 router.get('/favoris', proteger, ctrl.mesFavoris);
