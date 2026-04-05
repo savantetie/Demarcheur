@@ -110,17 +110,18 @@ exports.voirDocumentAgence = async (req, res) => {
     if (!user?.agence?.documentRCCM) {
       return res.status(404).json({ message: 'Aucun document disponible.' });
     }
-    // Extraire le public_id depuis l'URL Cloudinary
     const url = user.agence.documentRCCM;
-    const publicId = user.agence.documentRCCMId || url.split('/upload/')[1].replace(/^v\d+\//, '');
-    // Générer une URL signée valable 1 heure
-    const signedUrl = cloudinary.url(publicId, {
-      secure: true,
-      sign_url: true,
-      expires_at: Math.floor(Date.now() / 1000) + 3600,
-      resource_type: 'image',
+    // Télécharger le fichier côté serveur et le streamer au client
+    const https = require('https');
+    const http = require('http');
+    const protocol = url.startsWith('https') ? https : http;
+    protocol.get(url, (stream) => {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'inline; filename="document-rccm.pdf"');
+      stream.pipe(res);
+    }).on('error', () => {
+      res.status(500).json({ message: 'Impossible de récupérer le document.' });
     });
-    res.redirect(signedUrl);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
