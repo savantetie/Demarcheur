@@ -1,48 +1,88 @@
 .auth-page {
-  min-height: calc(100vh - 140px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
-  background: linear-gradient(135deg, var(--vert-pale), #f0fdf4);
+  min-height: calc(100vh - 68px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2.5rem 1rem;
+  background: linear-gradient(160deg, var(--vert-pale) 0%, #fff 60%);
 }
 
 .auth-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 440px;
-  box-shadow: var(--ombre-forte);
+  background: var(--blanc);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  width: 100%; max-width: 420px;
+  box-shadow: var(--ombre-lg);
+  border: 1px solid var(--gris-bordure);
 }
+.auth-card-lg { max-width: 520px; }
+
+.auth-back {
+  display: inline-block;
+  font-size: .82rem; color: var(--gris); font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+.auth-back:hover { color: var(--vert); }
 
 .auth-logo {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--vert);
-  margin-bottom: 1.2rem;
-  text-align: center;
+  font-size: 1.4rem; font-weight: 900; color: var(--vert);
+  margin-bottom: 1.25rem; text-align: center;
+  display: block; letter-spacing: -.03em;
 }
 
 .auth-card h1 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: .25rem;
+  font-size: 1.6rem; font-weight: 800; text-align: center;
+  margin-bottom: .3rem; letter-spacing: -.03em;
 }
 
 .auth-sub {
-  text-align: center;
-  color: var(--gris);
-  font-size: .9rem;
-  margin-bottom: 1.75rem;
+  text-align: center; color: var(--gris);
+  font-size: .875rem; margin-bottom: 1.75rem;
+}
+
+/* Mot de passe */
+.input-password {
+  position: relative;
+}
+.input-password input { padding-right: 2.75rem; width: 100%; }
+.toggle-mdp {
+  position: absolute; right: .75rem; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none; font-size: 1rem;
+  cursor: pointer; padding: 0;
+}
+
+/* Force mot de passe */
+.force-mdp {
+  display: flex; align-items: center; gap: .75rem;
+  margin-top: .4rem;
+}
+.force-barre { display: flex; gap: 3px; flex: 1; }
+.force-segment { flex: 1; height: 4px; border-radius: 2px; transition: background .3s; }
+.force-mdp span { font-size: .75rem; font-weight: 700; min-width: 40px; }
+
+/* Erreur champ */
+.form-error { font-size: .75rem; color: #ef4444; margin-top: .25rem; display: block; }
+
+/* CGV */
+.form-cgv {
+  display: flex; align-items: flex-start; gap: .6rem;
+  font-size: .82rem; color: var(--texte-sec); margin-top: .5rem;
+}
+.form-cgv input { margin-top: 3px; flex-shrink: 0; accent-color: var(--vert); }
+.form-cgv a { color: var(--vert); font-weight: 600; }
+
+/* 2 colonnes */
+.form-row-2 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;
 }
 
 .auth-footer {
-  text-align: center;
-  margin-top: 1.25rem;
-  font-size: .9rem;
-  color: var(--gris);
+  text-align: center; margin-top: 1.25rem;
+  font-size: .875rem; color: var(--gris);
 }
-.auth-footer a { color: var(--vert); font-weight: 600; }
+.auth-footer a { color: var(--vert); font-weight: 700; }
 .auth-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: 1.75rem 1.25rem; }
+  .form-row-2 { grid-template-columns: 1fr; }
+}

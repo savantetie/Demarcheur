@@ -1,68 +1,52 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useAuth } from '../context/AuthContext';
-import './Auth.css';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Register.css';
 
 export default function Register() {
-  const { inscription } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ nom: '', email: '', telephone: '', motDePasse: '', confirm: '' });
-  const [chargement, setChargement] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (form.motDePasse !== form.confirm) {
-      return toast.error('Les mots de passe ne correspondent pas.');
-    }
-    setChargement(true);
-    try {
-      await inscription({ nom: form.nom, email: form.email, telephone: form.telephone, motDePasse: form.motDePasse });
-      toast.success('Compte créé avec succès !');
-      navigate('/tableau-de-bord');
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Erreur lors de l\'inscription.');
-    } finally {
-      setChargement(false);
-    }
-  };
-
-  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
-
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-logo">🏠 Démarcheur</div>
-        <h1>Créer un compte</h1>
-        <p className="auth-sub">Commencez à publier vos annonces gratuitement</p>
+    <div className="register-choice-page">
+      <div className="register-choice-container">
+        <div className="register-choice-header">
+          <Link to="/" className="register-logo">🏠 Démarcheur</Link>
+          <h1>Créer un compte</h1>
+          <p>Choisissez le type de compte qui correspond à votre besoin</p>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nom complet</label>
-            <input required value={form.nom} onChange={set('nom')} />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" required value={form.email} onChange={set('email')} />
-          </div>
-          <div className="form-group">
-            <label>Téléphone</label>
-            <input type="tel" required placeholder="+224 XXX XXX XXX" value={form.telephone} onChange={set('telephone')} />
-          </div>
-          <div className="form-group">
-            <label>Mot de passe</label>
-            <input type="password" required minLength={6} value={form.motDePasse} onChange={set('motDePasse')} />
-          </div>
-          <div className="form-group">
-            <label>Confirmer le mot de passe</label>
-            <input type="password" required value={form.confirm} onChange={set('confirm')} />
-          </div>
-          <button type="submit" className="btn btn-primary btn-full btn-lg" disabled={chargement}>
-            {chargement ? 'Création...' : 'Créer mon compte'}
-          </button>
-        </form>
+        <div className="register-choice-cards">
+          {/* Particulier */}
+          <Link to="/inscription/particulier" className="register-choice-card">
+            <div className="choice-icon">👤</div>
+            <h2>Particulier</h2>
+            <p>Je cherche un logement ou je veux louer / vendre mon bien</p>
+            <ul className="choice-features">
+              <li>✓ Consulter toutes les annonces</li>
+              <li>✓ Sauvegarder vos favoris</li>
+              <li>✓ Créer des alertes immobilières</li>
+              <li>✓ Publier jusqu'à 3 annonces</li>
+              <li>✓ Contacter les propriétaires</li>
+            </ul>
+            <div className="choice-badge gratuit">Gratuit</div>
+            <div className="choice-cta">S'inscrire comme particulier →</div>
+          </Link>
 
-        <p className="auth-footer">
+          {/* Agence */}
+          <Link to="/inscription/agence" className="register-choice-card featured">
+            <div className="choice-badge pro">Professionnel</div>
+            <div className="choice-icon">🏢</div>
+            <h2>Agence / Professionnel</h2>
+            <p>Je suis une agence immobilière ou un promoteur professionnel</p>
+            <ul className="choice-features">
+              <li>✓ Annonces illimitées</li>
+              <li>✓ Page agence personnalisée</li>
+              <li>✓ Tableau de bord avancé</li>
+              <li>✓ Statistiques de vos annonces</li>
+              <li>✓ Support prioritaire</li>
+            </ul>
+            <div className="choice-cta">S'inscrire comme professionnel →</div>
+          </Link>
+        </div>
+
+        <p className="register-login-link">
           Déjà un compte ? <Link to="/connexion">Se connecter</Link>
         </p>
       </div>

@@ -41,12 +41,45 @@ exports.getAnnonce = async (req, res) => {
 
 exports.creerAnnonce = async (req, res) => {
   try {
-    const { titre, type, prix, quartier, ville, description, telephone, whatsapp } = req.body;
+    const {
+      titre, type, typeLogement, prix, quartier, ville, commune, repere,
+      description, telephone, whatsapp,
+      surface, surfaceTerrain, nbChambres, nbPieces, nbSDB, etage, etat,
+      titreFoncier, negotiable, caution, chargesIncluses, disponibilite,
+      refInterne, typeMandat,
+    } = req.body;
+
+    // equipements peut arriver comme tableau ou string séparé par virgules
+    let equipements = [];
+    if (req.body.equipements) {
+      equipements = Array.isArray(req.body.equipements)
+        ? req.body.equipements
+        : req.body.equipements.split(',').map(e => e.trim()).filter(Boolean);
+    }
+
     if (req.files?.length) console.log('Fichier reçu:', JSON.stringify(req.files[0], null, 2));
     const photos = (req.files || []).map(f => ({ url: f.path || f.secure_url, public_id: f.filename || f.public_id }));
 
     const annonce = await Listing.create({
       titre, type, prix, quartier, ville, description, photos,
+      typeLogement: typeLogement || null,
+      commune: commune || '',
+      repere: repere || '',
+      surface: surface ? Number(surface) : null,
+      surfaceTerrain: surfaceTerrain ? Number(surfaceTerrain) : null,
+      nbChambres: nbChambres ? Number(nbChambres) : null,
+      nbPieces: nbPieces ? Number(nbPieces) : null,
+      nbSDB: nbSDB ? Number(nbSDB) : null,
+      etage: etage || '',
+      etat: etat || null,
+      titreFoncier: titreFoncier || null,
+      equipements,
+      negotiable: negotiable === 'true' || negotiable === true,
+      caution: caution ? Number(caution) : 0,
+      chargesIncluses: chargesIncluses === 'true' || chargesIncluses === true,
+      disponibilite: disponibilite || 'immediate',
+      refInterne: refInterne || '',
+      typeMandat: typeMandat || null,
       telephone: telephone || req.user.telephone,
       whatsapp: whatsapp || req.user.telephone,
       proprietaire: req.user._id,

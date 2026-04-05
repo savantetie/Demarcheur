@@ -1,11 +1,7 @@
 const router = require('express').Router();
 const ctrl = require('../controllers/listingController');
-const { proteger, autoriser } = require('../middleware/auth');
+const { proteger, verifierLimiteAnnonces } = require('../middleware/auth');
 const upload = require('../middleware/upload');
-
-router.get('/', ctrl.getAnnonces);
-router.get('/mes-annonces', proteger, ctrl.mesAnnonces);
-router.get('/:id', ctrl.getAnnonce);
 
 const handleUpload = (req, res, next) => {
   upload.array('photos', 8)(req, res, (err) => {
@@ -17,7 +13,13 @@ const handleUpload = (req, res, next) => {
   });
 };
 
-router.post('/', proteger, autoriser('proprietaire', 'admin'), handleUpload, ctrl.creerAnnonce);
+// Routes publiques
+router.get('/', ctrl.getAnnonces);
+router.get('/mes-annonces', proteger, ctrl.mesAnnonces);
+router.get('/:id', ctrl.getAnnonce);
+
+// Routes protégées
+router.post('/', proteger, verifierLimiteAnnonces, handleUpload, ctrl.creerAnnonce);
 router.put('/:id', proteger, handleUpload, ctrl.modifierAnnonce);
 router.patch('/:id/statut', proteger, ctrl.changerStatut);
 router.delete('/:id', proteger, ctrl.supprimerAnnonce);

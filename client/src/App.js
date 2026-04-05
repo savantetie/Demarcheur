@@ -4,14 +4,28 @@ import { useAuth } from './context/AuthContext';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AgencesCarousel from './components/AgencesCarousel';
 import Home from './pages/Home';
 import ListingDetail from './pages/ListingDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RegisterUser from './pages/RegisterUser';
+import RegisterAgency from './pages/RegisterAgency';
 import Dashboard from './pages/Dashboard';
 import CreateListing from './pages/CreateListing';
 import EditListing from './pages/EditListing';
 import AdminDashboard from './pages/AdminDashboard';
+import Pricing from './pages/Pricing';
+import PaymentPage from './pages/PaymentPage';
+
+// Bloque les agences non validées
+const AgenceGate = ({ children }) => {
+  const { user } = useAuth();
+  if (user?.role === 'agency' && !user?.agence?.valide) {
+    return <Navigate to="/tableau-de-bord" />;
+  }
+  return children;
+};
 
 const PrivateRoute = ({ children, roles }) => {
   const { user, chargement } = useAuth();
@@ -31,18 +45,20 @@ export default function App() {
           <Route path="/annonce/:id" element={<ListingDetail />} />
           <Route path="/connexion" element={<Login />} />
           <Route path="/inscription" element={<Register />} />
+          <Route path="/inscription/particulier" element={<RegisterUser />} />
+          <Route path="/inscription/agence" element={<RegisterAgency />} />
           <Route path="/tableau-de-bord" element={
-            <PrivateRoute roles={['proprietaire', 'admin']}>
+            <PrivateRoute roles={['user', 'agency', 'admin']}>
               <Dashboard />
             </PrivateRoute>
           } />
           <Route path="/nouvelle-annonce" element={
-            <PrivateRoute roles={['proprietaire', 'admin']}>
-              <CreateListing />
+            <PrivateRoute roles={['user', 'agency', 'admin']}>
+              <AgenceGate><CreateListing /></AgenceGate>
             </PrivateRoute>
           } />
           <Route path="/modifier-annonce/:id" element={
-            <PrivateRoute roles={['proprietaire', 'admin']}>
+            <PrivateRoute roles={['user', 'agency', 'admin']}>
               <EditListing />
             </PrivateRoute>
           } />
@@ -51,9 +67,16 @@ export default function App() {
               <AdminDashboard />
             </PrivateRoute>
           } />
+          <Route path="/tarifs" element={<Pricing />} />
+          <Route path="/paiement/:planId" element={
+            <PrivateRoute roles={['agency']}>
+              <PaymentPage />
+            </PrivateRoute>
+          } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
+      <AgencesCarousel />
       <Footer />
     </BrowserRouter>
   );

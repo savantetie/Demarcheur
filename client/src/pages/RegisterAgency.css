@@ -1,0 +1,44 @@
+.agency-page .auth-card { max-width: 600px; }
+
+.agency-steps {
+  display: flex; align-items: center;
+  margin-bottom: 2rem; gap: 0;
+}
+
+.agency-step {
+  display: flex; align-items: center; gap: .5rem;
+  flex: 1; opacity: .4; transition: opacity var(--transition);
+}
+.agency-step.actif { opacity: 1; }
+
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gris-bordure); color: var(--gris);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 800; flex-shrink: 0;
+  transition: all var(--transition);
+}
+.agency-step.actif .step-num { background: var(--vert); color: #fff; }
+
+.agency-step span { font-size: .8rem; font-weight: 600; color: var(--texte-sec); }
+
+.step-line {
+  flex: 1; height: 2px;
+  background: var(--gris-bordure);
+  margin: 0 .5rem;
+}
+
+.agency-info-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-sm);
+  padding: .9rem 1rem;
+  font-size: .85rem;
+  color: #1e40af;
+  margin: 1rem 0;
+  line-height: 1.5;
+}
+
+.form-actions-row {
+  display: flex; gap: .75rem; justify-content: space-between;
+}

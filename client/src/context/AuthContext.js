@@ -26,11 +26,18 @@ export const AuthProvider = ({ children }) => {
     return res.data.user;
   };
 
-  const inscription = async (data) => {
-    const res = await api.post('/auth/inscription', data);
+  const inscriptionUser = async (data) => {
+    const res = await api.post('/auth/inscription/user', data);
     localStorage.setItem('token', res.data.token);
     setUser(res.data.user);
-    return res.data.user;
+    return res.data;
+  };
+
+  const inscriptionAgence = async (data) => {
+    const res = await api.post('/auth/inscription/agence', data);
+    localStorage.setItem('token', res.data.token);
+    setUser(res.data.user);
+    return res.data;
   };
 
   const deconnexion = () => {
@@ -38,8 +45,14 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const rafraichirUser = async () => {
+    const res = await api.get('/auth/moi');
+    setUser(res.data.user);
+    return res.data.user;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, chargement, connexion, inscription, deconnexion }}>
+    <AuthContext.Provider value={{ user, chargement, connexion, inscriptionUser, inscriptionAgence, deconnexion, rafraichirUser, setUser }}>
       {children}
     </AuthContext.Provider>
   );

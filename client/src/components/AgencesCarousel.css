@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════
+   BANDEAU AGENCES PARTENAIRES
+   ═══════════════════════════════════════════════ */
+
+.agences-strip {
+  background: #f8fafc;
+  border-top: 1px solid #e5e9ef;
+  border-bottom: 1px solid #e5e9ef;
+  padding: 1.5rem 0;
+  overflow: hidden;
+}
+
+.agences-strip-label {
+  text-align: center;
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: #94a3b8;
+  margin-bottom: 1.1rem;
+}
+
+.agences-track-wrap {
+  overflow: hidden;
+  position: relative;
+  /* masque les bords gauche/droite en fondu */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+.agences-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  animation: scroll-agences 28s linear infinite;
+}
+
+.agences-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-agences {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.agence-logo-card {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  background: #fff;
+  border: 1px solid #e5e9ef;
+  border-radius: 12px;
+  padding: .65rem 1.25rem;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  transition: box-shadow .15s, transform .15s;
+  cursor: default;
+}
+
+.agence-logo-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  transform: translateY(-2px);
+}
+
+.agence-sigle {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .78rem;
+  font-weight: 900;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: .02em;
+}
+
+.agence-nom {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #1e293b;
+}

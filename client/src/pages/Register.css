@@ -1,0 +1,75 @@
+.register-choice-page {
+  min-height: calc(100vh - 68px);
+  background: linear-gradient(160deg, var(--vert-pale) 0%, #fff 60%);
+  padding: 3rem 1.25rem;
+  display: flex; align-items: flex-start; justify-content: center;
+}
+
+.register-choice-container { max-width: 880px; width: 100%; }
+
+.register-choice-header { text-align: center; margin-bottom: 2.5rem; }
+.register-logo { font-size: 1.4rem; font-weight: 900; color: var(--vert); letter-spacing: -.03em; display: inline-block; margin-bottom: 1.25rem; }
+.register-choice-header h1 { font-size: 2rem; font-weight: 900; letter-spacing: -.03em; margin-bottom: .5rem; }
+.register-choice-header p { color: var(--gris); font-size: 1rem; }
+
+.register-choice-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.register-choice-card {
+  background: var(--blanc);
+  border: 2px solid var(--gris-bordure);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  transition: all var(--transition);
+  display: flex; flex-direction: column;
+}
+.register-choice-card:hover {
+  border-color: var(--vert);
+  box-shadow: var(--ombre-lg);
+  transform: translateY(-4px);
+}
+.register-choice-card.featured {
+  border-color: var(--vert);
+  background: linear-gradient(160deg, #f0faf4 0%, #fff 60%);
+}
+
+.choice-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.register-choice-card h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: .5rem; }
+.register-choice-card > p { color: var(--texte-sec); font-size: .88rem; margin-bottom: 1.25rem; line-height: 1.5; }
+
+.choice-features {
+  list-style: none;
+  display: flex; flex-direction: column; gap: .45rem;
+  margin-bottom: 1.5rem; flex: 1;
+}
+.choice-features li { font-size: .85rem; color: var(--texte-sec); }
+.choice-features li::first-line { color: var(--vert); }
+
+.choice-badge {
+  position: absolute; top: -12px; right: 1.25rem;
+  padding: .25rem .9rem; border-radius: 999px;
+  font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+}
+.choice-badge.gratuit { background: #d1fae5; color: #065f46; }
+.choice-badge.pro { background: var(--vert); color: #fff; }
+
+.choice-cta {
+  font-size: .875rem; font-weight: 700; color: var(--vert);
+  margin-top: auto; padding-top: 1rem;
+  border-top: 1px solid var(--gris-bordure);
+}
+.register-choice-card.featured .choice-cta { color: var(--vert-fonce); }
+
+.register-login-link { text-align: center; color: var(--gris); font-size: .875rem; }
+.register-login-link a { color: var(--vert); font-weight: 700; }
+.register-login-link a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .register-choice-cards { grid-template-columns: 1fr; }
+  .register-choice-header h1 { font-size: 1.5rem; }
+}

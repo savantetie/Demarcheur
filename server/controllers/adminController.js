@@ -1,11 +1,35 @@
 const Listing = require('../models/Listing');
 const User = require('../models/User');
-const Message = require('../models/Message');
+const emailService = require('../utils/email');
 
+exports.tableau = async (req, res) => {
+  try {
+    const [totalAnnonces, enAttente, publiees, louees, vendues, totalUsers, totalAgences, agencesEnAttente] = await Promise.all([
+      Listing.countDocuments(),
+      Listing.countDocuments({ statut: 'en_attente' }),
+      Listing.countDocuments({ statut: 'publie' }),
+      Listing.countDocuments({ statut: 'loue' }),
+      Listing.countDocuments({ statut: 'vendu' }),
+      User.countDocuments({ role: 'user' }),
+      User.countDocuments({ role: 'agency' }),
+      User.countDocuments({ role: 'agency', 'agence.valide': false }),
+    ]);
+
+    const parType = await Listing.aggregate([
+      { $group: { _id: '$type', count: { $sum: 1 } } },
+    ]);
+
+    res.json({ totalAnnonces, enAttente, publiees, louees, vendues, totalUsers, totalAgences, agencesEnAttente, parType });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Annonces
 exports.annonceEnAttente = async (req, res) => {
   try {
     const annonces = await Listing.find({ statut: 'en_attente' })
-      .populate('proprietaire', 'nom email telephone')
+      .populate('proprietaire', 'nom email telephone role agence')
       .sort({ createdAt: -1 });
     res.json({ annonces });
   } catch (err) {
@@ -15,15 +39,11 @@ exports.annonceEnAttente = async (req, res) => {
 
 exports.validerAnnonce = async (req, res) => {
   try {
-    const { decision } = req.body; // 'publie' ou 'rejete'
+    const { decision } = req.body;
     if (!['publie', 'rejete'].includes(decision)) {
       return res.status(400).json({ message: 'Décision invalide.' });
     }
-    const annonce = await Listing.findByIdAndUpdate(
-      req.params.id,
-      { statut: decision },
-      { new: true }
-    );
+    const annonce = await Listing.findByIdAndUpdate(req.params.id, { statut: decision }, { new: true });
     if (!annonce) return res.status(404).json({ message: 'Annonce introuvable.' });
     res.json({ annonce });
   } catch (err) {
@@ -37,7 +57,7 @@ exports.toutesAnnonces = async (req, res) => {
     const filtre = statut ? { statut } : {};
     const total = await Listing.countDocuments(filtre);
     const annonces = await Listing.find(filtre)
-      .populate('proprietaire', 'nom email')
+      .populate('proprietaire', 'nom email role')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limite)
       .limit(Number(limite));
@@ -47,9 +67,12 @@ exports.toutesAnnonces = async (req, res) => {
   }
 };
 
+// Utilisateurs
 exports.gererUtilisateurs = async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const { role } = req.query;
+    const filtre = role ? { role } : {};
+    const users = await User.find(filtre).sort({ createdAt: -1 });
     res.json({ users });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -60,32 +83,46 @@ exports.toggleUtilisateur = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'Utilisateur introuvable.' });
+    if (user.role === 'admin') return res.status(403).json({ message: 'Impossible de modifier un admin.' });
     user.actif = !user.actif;
-    await user.save();
+    await user.save({ validateBeforeSave: false });
     res.json({ user });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-exports.tableau = async (req, res) => {
+// Validation agences
+exports.agencesEnAttente = async (req, res) => {
   try {
-    const [totalAnnonces, enAttente, publiees, louees, vendues, totalUsers] = await Promise.all([
-      Listing.countDocuments(),
-      Listing.countDocuments({ statut: 'en_attente' }),
-      Listing.countDocuments({ statut: 'publie' }),
-      Listing.countDocuments({ statut: 'loue' }),
-      Listing.countDocuments({ statut: 'vendu' }),
-      User.countDocuments(),
-    ]);
+    const agences = await User.find({ role: 'agency', 'agence.valide': false, actif: true })
+      .sort({ 'agence.dateDemande': -1 });
+    res.json({ agences });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-    const parType = await Listing.aggregate([
-      { $group: { _id: '$type', count: { $sum: 1 } } },
-    ]);
+exports.validerAgence = async (req, res) => {
+  try {
+    const { decision } = req.body; // 'approuver' ou 'rejeter'
+    const user = await User.findById(req.params.id);
+    if (!user || user.role !== 'agency') {
+      return res.status(404).json({ message: 'Agence introuvable.' });
+    }
 
-    res.json({
-      totalAnnonces, enAttente, publiees, louees, vendues, totalUsers, parType,
-    });
+    if (decision === 'approuver') {
+      user.agence.valide = true;
+      user.agence.dateValidation = new Date();
+      user.agence.abonnement = { statut: 'actif', dateDebut: new Date(), dateFin: new Date(Date.now() + 30 * 86400000) };
+    } else {
+      user.actif = false;
+    }
+    await user.save({ validateBeforeSave: false });
+
+    try { await emailService.envoyerValidationAgence(user, decision === 'approuver'); } catch {}
+
+    res.json({ user });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

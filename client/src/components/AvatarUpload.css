@@ -1,0 +1,72 @@
+.avatar-upload {
+  position: relative;
+  display: inline-block;
+  width: var(--size, 80px);
+}
+
+.avatar-circle {
+  width: var(--size, 80px);
+  height: var(--size, 80px);
+  border-radius: 50%;
+  background: var(--vert-pale);
+  border: 3px solid var(--vert);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  flex-shrink: 0;
+}
+
+.avatar-circle:hover,
+.avatar-circle.hover {
+  border-color: var(--vert-clair);
+  box-shadow: 0 0 0 4px rgba(26,107,58,.15);
+}
+
+.avatar-circle img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initiales {
+  font-size: calc(var(--size, 80px) * 0.35);
+  font-weight: 800;
+  color: var(--vert);
+  user-select: none;
+}
+
+.avatar-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition);
+  font-size: calc(var(--size, 80px) * 0.3);
+}
+.avatar-circle:hover .avatar-overlay { opacity: 1; }
+
+.avatar-spinner {
+  width: calc(var(--size, 80px) * 0.4);
+  height: calc(var(--size, 80px) * 0.4);
+  border: 3px solid rgba(255,255,255,.3);
+  border-top-color: var(--vert);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+.avatar-delete {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  border: 2px solid #fff;
+  font-size: .6rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition);
+  padding: 0;
+}
+.avatar-delete:hover { background: #dc2626; }

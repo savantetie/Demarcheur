@@ -1,0 +1,173 @@
+/* ===== PAGE PRICING ===== */
+.pricing-page { padding-bottom: 4rem; }
+
+.pricing-hero {
+  background: linear-gradient(135deg, #0d2137 0%, #1a3a5c 100%);
+  color: #fff;
+  text-align: center;
+  padding: 4rem 1rem 3rem;
+}
+.pricing-hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; margin-bottom: .75rem; }
+.pricing-hero p { font-size: 1.1rem; opacity: .85; max-width: 480px; margin: 0 auto; }
+
+.plan-actuel-badge {
+  display: inline-block;
+  margin-top: 1.25rem;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 999px;
+  padding: .4rem 1.2rem;
+  font-size: .9rem;
+}
+
+/* Méthode de paiement */
+.methode-select {
+  margin: 1.5rem auto;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.methodes { display: flex; gap: .5rem; flex-wrap: wrap; }
+.methode-btn {
+  padding: .4rem .9rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--gris-bordure);
+  background: var(--blanc);
+  font-size: .82rem; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.methode-btn.active {
+  border-color: var(--vert);
+  background: var(--vert-pale);
+  color: var(--vert-fonce);
+}
+
+/* Grille plans */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem auto;
+}
+
+.plan-card {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  border: 2px solid var(--gris-bordure);
+  padding: 2rem 1.5rem;
+  position: relative;
+  transition: transform .2s, box-shadow .2s;
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+.plan-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+
+.plan-card.populaire {
+  border-color: var(--vert);
+  box-shadow: 0 0 0 3px rgba(22,160,133,.15);
+}
+.plan-card.actuel {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.plan-badge-populaire {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--vert); color: #fff;
+  padding: .25rem 1rem; border-radius: 999px; font-size: .78rem; font-weight: 700;
+  white-space: nowrap;
+}
+.plan-badge-actuel {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: #2563eb; color: #fff;
+  padding: .25rem 1rem; border-radius: 999px; font-size: .78rem; font-weight: 700;
+  white-space: nowrap;
+}
+
+.plan-header { text-align: center; }
+.plan-icon { font-size: 2.5rem; display: block; margin-bottom: .5rem; }
+.plan-header h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: .5rem; }
+
+.plan-prix { margin: .5rem 0; }
+.prix-gratuit { font-size: 2rem; font-weight: 900; color: var(--vert); }
+.prix-montant { font-size: 2rem; font-weight: 900; color: var(--vert-fonce); }
+.prix-devise { font-size: .85rem; color: var(--gris); }
+
+.plan-features {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: .5rem;
+  flex: 1;
+}
+.plan-features li {
+  display: flex; align-items: flex-start; gap: .5rem;
+  font-size: .88rem; line-height: 1.4;
+}
+.plan-features .check { color: var(--vert); font-weight: 700; flex-shrink: 0; }
+
+.plan-footer { margin-top: auto; }
+.btn-block { width: 100%; }
+.plan-inclus { display: block; text-align: center; font-size: .85rem; color: var(--gris); font-weight: 600; padding: .6rem 0; }
+
+/* Confirmation souscription */
+.souscription-confirm {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 560px;
+  text-align: center;
+}
+.souscription-confirm h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: .75rem; }
+.ref-text { font-size: 1rem; margin-bottom: .75rem; }
+.instructions {
+  background: #fff;
+  border: 1px solid #d1fae5;
+  border-radius: var(--radius-sm);
+  padding: .9rem 1rem;
+  font-size: .9rem; line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+/* Bannière paiement */
+.pricing-payment-banner {
+  display: flex; align-items: center; gap: 1.25rem;
+  background: var(--blanc);
+  border: 1.5px solid var(--gris-bordure);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+.ppb-icons { display: flex; gap: .5rem; flex-shrink: 0; }
+.ppb-logo {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; font-weight: 900; color: #fff;
+}
+.ppb-logo.om { background: #ff7900; }
+.ppb-logo.mtn { background: #ffcc00; color: #1a1a1a; }
+.ppb-text { flex: 1; }
+.ppb-text strong { display: block; font-size: .95rem; margin-bottom: .2rem; }
+.ppb-text p { font-size: .82rem; color: var(--gris); margin: 0; }
+.ppb-numero {
+  display: flex; flex-direction: column; align-items: flex-end;
+  text-align: right;
+}
+.ppb-numero span { font-size: .72rem; color: var(--gris); text-transform: uppercase; letter-spacing: .05em; }
+.ppb-numero strong { font-size: 1.2rem; color: var(--vert-fonce); letter-spacing: .06em; }
+
+/* FAQ */
+.pricing-faq { margin-top: 3rem; }
+.pricing-faq h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; }
+.faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+.faq-item {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  border: 1px solid var(--gris-bordure);
+  padding: 1.25rem;
+}
+.faq-item h4 { font-size: .95rem; font-weight: 700; margin-bottom: .5rem; }
+.faq-item p { font-size: .85rem; color: var(--gris); line-height: 1.6; }
+
+@media (max-width: 640px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .methode-select { flex-direction: column; align-items: flex-start; }
+}
