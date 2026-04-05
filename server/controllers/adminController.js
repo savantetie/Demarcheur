@@ -132,12 +132,12 @@ exports.voirDocumentAgence = async (req, res) => {
 
     const signedUrl = cloudinary.url(resourceInfo.public_id, {
       resource_type: resourceInfo.resource_type,
-      type: 'upload',
+      type: resourceInfo.type || 'upload',
       sign_url: true,
       secure: true,
       expires_at: Math.floor(Date.now() / 1000) + 3600,
     });
-    res.json({ url: signedUrl });
+    res.json({ url: signedUrl, type: resourceInfo.type, resource_type: resourceInfo.resource_type });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
