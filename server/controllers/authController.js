@@ -18,21 +18,17 @@ exports.inscriptionUser = async (req, res) => {
       return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
     }
 
-    const token = genererTokenVerif();
     const user = await User.create({
       nom, email, telephone, motDePasse,
       role: 'user',
-      tokenVerification: token,
-      tokenVerifExpire: Date.now() + 24 * 3600 * 1000,
+      emailVerifie: true,
+      actif: true,
     });
-
-    // Envoi email de vérification (silencieux si non configuré)
-    try { await emailService.envoyerVerification(user, token); } catch {}
 
     res.status(201).json({
       token: genererToken(user._id),
       user,
-      message: 'Compte créé ! Vérifiez votre email pour activer votre compte.',
+      message: 'Compte créé avec succès !',
     });
   } catch (err) {
     console.error(err);
@@ -49,23 +45,17 @@ exports.inscriptionAgence = async (req, res) => {
       return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
     }
 
-    const token = genererTokenVerif();
     const user = await User.create({
       nom, email, telephone, motDePasse, ville,
       role: 'agency',
-      tokenVerification: token,
-      tokenVerifExpire: Date.now() + 24 * 3600 * 1000,
+      emailVerifie: true,
+      actif: true,
       agence: {
         nomEntreprise, numeroEnregistrement, adresse, siteWeb, description,
         valide: false,
         dateDemande: new Date(),
       },
     });
-
-    try {
-      await emailService.envoyerVerification(user, token);
-      await emailService.envoyerConfirmationAgence(user);
-    } catch {}
 
     res.status(201).json({
       token: genererToken(user._id),
