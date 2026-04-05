@@ -188,17 +188,14 @@ export default function AdminDashboard() {
                           const token = localStorage.getItem('token');
                           const res = await fetch(`${process.env.REACT_APP_API_URL}/admin/agences/${a._id}/document`, {
                             headers: { Authorization: `Bearer ${token}` },
+                            redirect: 'manual',
                           });
-                          if (!res.ok) throw new Error();
-                          const blob = await res.blob();
-                          const url = URL.createObjectURL(blob);
-                          const link = document.createElement('a');
-                          link.href = url;
-                          link.download = 'document-rccm.pdf';
-                          link.click();
-                          URL.revokeObjectURL(url);
+                          const data = await res.json().catch(() => null);
+                          const finalUrl = data?.url || res.headers?.get('location');
+                          if (finalUrl) window.open(finalUrl, '_blank');
+                          else alert('Impossible d\'ouvrir le document.');
                         } catch { alert('Impossible d\'ouvrir le document.'); }
-                      }}>📄 Télécharger le RCCM</button>
+                      }}>📄 Voir le RCCM</button>
                     : <p style={{ fontSize: '.78rem', color: '#f59e0b' }}>⚠️ Aucun document RCCM joint</p>
                   }
                   <p style={{ fontSize: '.75rem', color: 'var(--gris)', marginTop: '.5rem' }}>
