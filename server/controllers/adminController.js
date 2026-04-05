@@ -116,12 +116,14 @@ exports.voirDocumentAgence = async (req, res) => {
     if (!match) return res.status(400).json({ message: 'URL invalide.' });
     const publicId = match[1]; // ex: demarcheur/documents/raugamkjxp6jvqfdyucp.pdf
 
-    // Générer une URL de téléchargement privée signée (valable 1h)
-    const signedUrl = cloudinary.utils.private_download_url(
-      publicId.replace(/\.[^/.]+$/, ''), // sans extension
-      publicId.split('.').pop(),          // extension
-      { resource_type: 'image', expires_at: Math.floor(Date.now() / 1000) + 3600 }
-    );
+    // Générer une URL signée accessible publiquement
+    const signedUrl = cloudinary.url(publicId, {
+      resource_type: 'image',
+      type: 'upload',
+      sign_url: true,
+      secure: true,
+      expires_at: Math.floor(Date.now() / 1000) + 3600,
+    });
     res.json({ url: signedUrl });
   } catch (err) {
     res.status(500).json({ message: err.message });
