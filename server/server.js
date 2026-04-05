@@ -10,7 +10,22 @@ const app = express();
 
 // Sécurité
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
+const originesAutorisees = [
+  'http://localhost:3000',
+  'https://demarcheur.vercel.app',
+  'https://www.demarcheur.org',
+  'https://demarcheur.org',
+];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || originesAutorisees.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS non autorisé: ' + origin));
+    }
+  },
+  credentials: true,
+}));
 app.use(limiteGlobale);
 
 // Parsers
