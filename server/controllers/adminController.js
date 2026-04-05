@@ -111,14 +111,27 @@ exports.voirDocumentAgence = async (req, res) => {
       return res.status(404).json({ message: 'Aucun document disponible.' });
     }
     const url = user.agence.documentRCCM;
-    // Extraire le public_id : tout ce qui est après /upload/vXXXX/
+    // Extraire le public_id sans extension (format image Cloudinary)
     const match = url.match(/\/upload\/(?:v\d+\/)?(.+)$/);
     if (!match) return res.status(400).json({ message: 'URL invalide.' });
-    const publicId = match[1]; // ex: demarcheur/documents/raugamkjxp6jvqfdyucp.pdf
+    const publicIdAvecExt = match[1]; // demarcheur/documents/raugamkjxp6jvqfdyucp.pdf
+    const publicIdSansExt = publicIdAvecExt.replace(/\.[^/.]+$/, ''); // sans .pdf
 
-    // Générer une URL signée accessible publiquement
-    const signedUrl = cloudinary.url(publicId, {
-      resource_type: 'image',
+    // Essayer de trouver la ressource avec les deux formats
+    let resourceInfo;
+    try {
+      resourceInfo = await cloudinary.api.resource(publicIdSansExt, { resource_type: 'image' });
+    } catch {
+      try {
+        resourceInfo = await cloudinary.api.resource(publicIdAvecExt, { resource_type: 'raw' });
+      } catch {
+        // Retourner l'URL originale en dernier recours
+        return res.json({ url });
+      }
+    }
+
+    const signedUrl = cloudinary.url(resourceInfo.public_id, {
+      resource_type: resourceInfo.resource_type,
       type: 'upload',
       sign_url: true,
       secure: true,
