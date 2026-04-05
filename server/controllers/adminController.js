@@ -1,6 +1,7 @@
 const Listing = require('../models/Listing');
 const User = require('../models/User');
 const emailService = require('../utils/email');
+const cloudinary = require('cloudinary').v2;
 
 exports.tableau = async (req, res) => {
   try {
@@ -98,6 +99,28 @@ exports.agencesEnAttente = async (req, res) => {
     const agences = await User.find({ role: 'agency', 'agence.valide': false, actif: true })
       .sort({ 'agence.dateDemande': -1 });
     res.json({ agences });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.voirDocumentAgence = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user?.agence?.documentRCCM) {
+      return res.status(404).json({ message: 'Aucun document disponible.' });
+    }
+    // Extraire le public_id depuis l'URL Cloudinary
+    const url = user.agence.documentRCCM;
+    const publicId = user.agence.documentRCCMId || url.split('/upload/')[1].replace(/^v\d+\//, '');
+    // Générer une URL signée valable 1 heure
+    const signedUrl = cloudinary.url(publicId, {
+      secure: true,
+      sign_url: true,
+      expires_at: Math.floor(Date.now() / 1000) + 3600,
+      resource_type: 'image',
+    });
+    res.redirect(signedUrl);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -18,5 +18,6 @@ router.patch('/utilisateurs/:id/toggle', ctrl.toggleUtilisateur);
 // Agences
 router.get('/agences/en-attente', ctrl.agencesEnAttente);
 router.patch('/agences/:id/valider', ctrl.validerAgence);
+router.get('/agences/:id/document', ctrl.voirDocumentAgence);
 
 module.exports = router;
