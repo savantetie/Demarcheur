@@ -6,11 +6,11 @@ cloudinary.config({ secure: true });
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
+  params: async (req, file) => ({
     folder: 'demarcheur/documents',
     allowed_formats: ['jpg', 'jpeg', 'png', 'pdf'],
-    resource_type: 'auto',
-  },
+    resource_type: file.mimetype === 'application/pdf' ? 'raw' : 'image',
+  }),
 });
 
 module.exports = multer({

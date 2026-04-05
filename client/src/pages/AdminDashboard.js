@@ -183,7 +183,7 @@ export default function AdminDashboard() {
                   {a.agence?.siteWeb && <p>🌐 <a href={a.agence.siteWeb} target="_blank" rel="noopener noreferrer">{a.agence.siteWeb}</a></p>}
                   {a.agence?.description && <p className="validation-desc">💬 {a.agence.description}</p>}
                   {a.agence?.documentRCCM
-                    ? <a href={a.agence.documentRCCM} target="_blank" rel="noopener noreferrer" className="btn-doc-rccm">📄 Voir le document RCCM</a>
+                    ? <a href={a.agence.documentRCCM.replace('/image/upload/', '/raw/upload/')} target="_blank" rel="noopener noreferrer" className="btn-doc-rccm">📄 Voir le document RCCM</a>
                     : <p style={{ fontSize: '.78rem', color: '#f59e0b' }}>⚠️ Aucun document RCCM joint</p>
                   }
                   <p style={{ fontSize: '.75rem', color: 'var(--gris)', marginTop: '.5rem' }}>
